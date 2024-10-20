@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  wordpress:
+    depends_on:
+      - mysql
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DOMAIN_NAME: ${WORDPRESS_DOMAIN_NAME}
+      WORDPRESS_DEBUG_LOG: true
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'DOMAIN_CURRENT_SITE', '${DOMAIN_CURRENT_SITE}' );
+        define( 'PATH_CURRENT_SITE', '/' );
+        define( 'WORDPRESS_DEBUG_LOG', true );
+    volumes:
+      - ./:/var/www/html
+  wordpress-cli:
+    image: wordpress:cli
+    user: '33'
+    volumes:
+      - ./config/wp_php.ini:/usr/local/etc/php/conf.d/wp_php.ini
+      - ./:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    depends_on:
+      - mysql
+      - wordpress
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./php.ini:/usr/local/etc/php/conf.d/wp_php.ini
+    restart: always
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+volumes:
+  wordpress:
+  mysql:

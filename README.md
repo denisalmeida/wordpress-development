@@ -113,12 +113,18 @@ define('WP_HOME','http://wp.docker');
 define('WP_SITEURL','http://wp.docker');
 ```
 
-### Adminer
+### PHP Booster
 
-Você também pode visitar `http://127.0.0.1:8080` para acessar a interface de banco de dados Adminer, depois de iniciar os contêineres.
+O arquivo `php.ini` que aplicar um booster nos limites do PHP. Altere conforme necessário:
 
-O nome de usuário default é `root`, e a senha é a mesma fornecida no arquivo `.env`.
-
+```
+file_uploads = On
+memory_limit = 512M
+upload_max_filesize = 128M
+post_max_size = 128M
+max_execution_time = 600
+max_input_time = 1000
+```
 
 # Authors
 
