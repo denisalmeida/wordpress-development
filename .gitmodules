@@ -1,0 +1,3 @@
+[submodule "wp-content/themes/tailmint"]
+	path = wp-content/themes/tailmint
+	url = git@github.com:denisalmeida/tailmint.git
