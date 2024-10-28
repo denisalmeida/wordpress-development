@@ -12,16 +12,37 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
       WORDPRESS_DOMAIN_NAME: ${WORDPRESS_DOMAIN_NAME}
-      WORDPRESS_DEBUG_LOG: true
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG}
       WORDPRESS_CONFIG_EXTRA: |
+        /** Domain path current site */
         define( 'DOMAIN_CURRENT_SITE', '${DOMAIN_CURRENT_SITE}' );
-        define( 'PATH_CURRENT_SITE', '/' );
-        define( 'WORDPRESS_DEBUG_LOG', true );
+        define( 'WP_HOME', '${WP_HOME}' );
+        define( 'WP_SITEURL', '${WP_SITEURL}' );
+        define( 'PATH_CURRENT_SITE', '${PATH_CURRENT_SITE}' );
+
+        /** Disable wp core auto update */
+        define( 'WP_AUTO_UPDATE_CORE', ${WP_AUTO_UPDATE_CORE} );
+
+        /** Local environment settings and debug */
+        define( 'WP_CACHE', ${WP_CACHE} );
+        define( 'WP_ENVIRONMENT_TYPE', '${WP_ENVIRONMENT_TYPE}' );
+        define( 'WP_DEVELOPMENT_MODE', '${WP_DEVELOPMENT_MODE}' );
+        define( 'WP_DEBUG_DISPLAY', ${WP_DEBUG_DISPLAY} );
+        define( 'WP_DEBUG_LOG', ${WP_DEBUG_LOG} );
+
+        /* Configure mail server */
+        define( 'WORDPRESS_SMTP_AUTH', '${WORDPRESS_SMTP_AUTH}' );
+        define( 'WORDPRESS_SMTP_SECURE', '${WORDPRESS_SMTP_SECURE}' );
+        define( 'WORDPRESS_SMTP_HOST', '${WORDPRESS_SMTP_HOST}' );
+        define( 'WORDPRESS_SMTP_PORT', ${WORDPRESS_SMTP_PORT} );
+        define( 'WORDPRESS_SMTP_USERNAME', ${WORDPRESS_SMTP_USERNAME} );
+        define( 'WORDPRESS_SMTP_PASSWORD', ${WORDPRESS_SMTP_PASSWORD} );
+        define( 'WORDPRESS_SMTP_FROM', '${WORDPRESS_SMTP_FROM}' );
+        define( 'WORDPRESS_SMTP_FROM_NAME', '${WORDPRESS_SMTP_FROM_NAME}' );
     volumes:
       - ./:/var/www/html
   wordpress-cli:
     image: wordpress:cli
-    user: '33'
     volumes:
       - ./config/wp_php.ini:/usr/local/etc/php/conf.d/wp_php.ini
       - ./:/var/www/html
